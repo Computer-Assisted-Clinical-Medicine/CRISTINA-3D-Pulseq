@@ -7,12 +7,20 @@ triple-quantum sodium*), implemented in MATLAB using the
 [Pulseq](https://pulseq.github.io/) framework, together with a corresponding
 reconstruction script.
 
-> **Note:** The monopolar readout showed large signal deviations across the
-> echo dimension. This may be caused by gradient or ADC delays that we could
-> not resolve or measure appropriately. We therefore adapted the implementation
-> to use a bipolar readout. If you have encountered the same issue or have
-> ideas on how to resolve it, please feel free to open an issue or reach out —
-> we welcome further discussion.
+> **Note on monopolar readout:** The monopolar readout showed large signal
+> deviations across the echo dimension. This may be caused by gradient or ADC
+> delays that we could not resolve or measure appropriately. We therefore
+> adapted the implementation to use a bipolar readout. If you have encountered
+> the same issue or have ideas on how to resolve it, please feel free to open
+> an issue or reach out — we welcome further discussion.
+
+> **Note on bipolar readout:** The bipolar implementation exhibits a residual
+> artefact: a bright line appears at the centre of the image along the
+> frequency-encoding direction. This is a known issue in bipolar multi-echo
+> acquisitions, likely caused by a DC offset or a k-space centre inconsistency
+> between odd (forward) and even (reverse) echoes. It has not yet been fully
+> resolved. If you have suggestions or a working correction, please open an
+> issue or get in touch.
 ---
 
 ## Overview
