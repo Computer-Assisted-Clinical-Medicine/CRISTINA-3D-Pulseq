@@ -42,6 +42,7 @@ two complementary phase cycles (xi90 and xi0). This implementation supports:
 |---|---|
 | [Pulseq for MATLAB](https://github.com/pulseq/pulseq) | Sequence design and `.seq` file export |
 | [mapVBVD](https://github.com/CIC-methods/FID-A) | Raw data loading (Siemens TWIX format) |
+| [MQC_Imaging_CRISTINA](https://github.com/MHoesl/MQC_Imaging_CRISTINA) | Original CRISTINA reconstruction framework by Hoesl et al. |
 | [Tensor-MP-PCA](https://github.com/Neurophysics-CFIN/Tensor-MP-PCA) | Optional k-space denoising (Olesen et al., MRM 2022) |
 
 ---
