@@ -36,15 +36,6 @@ two complementary phase cycles (xi90 and xi0). This implementation supports:
 
 ---
 
-## Repository Structure
-
-```
-├── Cristina3d_monopolar.m      % Pulseq sequence — monopolar readout
-├── Cristina3d_bipolar.m        % Pulseq sequence — bipolar readout
-└── Recon_Cristina3d.m          % Reconstruction script (MATLAB)
-```
-
----
 ## Usage
 
 ### 1. Generate the sequence file
