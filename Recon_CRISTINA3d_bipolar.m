@@ -62,22 +62,22 @@ seq.read(seqpath, 'detectRFuse');
 
 fov               = seq.getDefinition('FOV');
 ro_os             = seq.getDefinition('ro');           % Readout oversampling factor
-data_size         = seq.getDefinition('mat');          % [Nx, Ny, Nz, nTE, nPhi]
+data_size         = seq.getDefinition('mat');          % As stored: [Nx, Ny, Nz, nTE, nPhi]
 readout_direction = seq.getDefinition('FreqEncDir');
 
 % Determine number of averages from the ratio of acquired ADC shots to
-% expected shots (Nx * Nz * nPhi per average)
+% expected shots (Ny * Nz * nPhi per average)
 avg = size(ksp_Xi0, 3) / (data_size(1) * data_size(3) * data_size(4));
 
-% Expand data_size to 6-D: [kx, ky, kz, nTE, nPhi, avg]
+% Reorder and expand to 6-D: [Nx, Ny, Nz, nPhi, nTE, avg]
 data_size = [data_size(1), data_size(2), data_size(3), data_size(5), data_size(4), avg];
 
 % Calculate ADC sample times and excitation times from the sequence trajectory
 [ktraj_adc, t_adc, ~, ~, t_excitation] = seq.calculateKspacePP();
 
 % Extract echo times relative to the third excitation pulse (RF3), offset
-% by 250 µs to account for hardware/gradient delays.
-% Samples 13:24:(24*nTE) picks the centre sample of each echo lobe.
+% by 250 µs since a block pulse is used and Pulseq counts from pulse centre.
+% Indices 13:24:(24*nTE) pick the centre sample of each echo lobe.
 t_echos = t_adc(13:24:(24*data_size(4))) - t_excitation(3) - 250e-6;
 
 %% Reshape ADC Stream into 6-D K-Space Array
@@ -124,7 +124,7 @@ for avg_i = 1:data_size(6)
                         t(:, iY, iZ, iTE, iPhi) = t_adc(count_sample : count_sample + data_size(2) - 1);
                     end
 
-                    % Advance sample pointer: Nx samples + 2 ramp samples per echo
+                    % Advance sample pointer: Nx samples + 2 gradient ramp samples per echo
                     count_sample = count_sample + data_size(2) + 2;
                 end
 
@@ -162,15 +162,18 @@ img_comb = spec_xi0 + 1i*spec_xi90;
 
 fprintf('done.\n');
 
-%%%OPTIONAL: denoise img_comb before echo extraction%%%
-% Tensor MP-PCA denoising (Olesen et al., MRM 2022, doi:10.1002/mrm.29478)
-% https://github.com/Neurophysics-CFIN/Tensor-MP-PCA
-% [img_denoised,~,~,~] = denoise_recursive_tensor(img_comb,[5,5,5],indices={1:3 4 5});
+
+%% Advanced method from original paper
+% [SQ,TQ,ZQ,...
+%     SQ_TE,TQ_TE,ZQ_TE,...
+%     B0,imask,imask2] = CRISTINA_getMQC_3D(ksp_reshp_Xi0,ksp_reshp_Xi90,t_echos,60,10e-3, 1);
 
 %% Extract SQ and TQ Contrasts
+%%%OPTIONAL: denoise img_comb before coherence extraction%%%
+% [img_denoised,~,~,~] = denoise_recursive_tensor(img_comb,[5,5,5],indices={1:3 4 5});
 
-% Echo index 5 corresponds to the single-quantum (SQ) dominated echo;
-% echo index 1 corresponds to the triple-quantum (TQ) dominated echo.
+% spectra indices 3 & 5 correspond to single-quantum (SQ)
+% spectra index 1 corresponds to the triple-quantum (TQ)
 SQ_TE = squeeze(img_comb(:, :, :, :, 5));   % SQ echo train [x, y, z, echo]
 TQ_TE = squeeze(img_comb(:, :, :, :, 1));   % TQ echo train [x, y, z, echo]
 
@@ -186,3 +189,5 @@ subplot(1, 2, 1); imagesc(SQ(:, :, slice)); title('SQ'); axis image; colorbar;
 subplot(1, 2, 2); imagesc(TQ(:, :, slice)); title('TQ'); axis image; colorbar;
 
 return
+
+%%%OPTIONAL: voxel-wise fit procedure for TQ/SQ ratio computation%%%
