@@ -77,6 +77,9 @@ files, then run section by section:
    cycles
 4. **Visualise** the central slice of the SQ and TQ images
 
+> **Alternative:** The authors of the original paper also published an reconstruciton you may
+>  want to try. (https://github.com/MHoesl/MQC_Imaging_CRISTINA)
+
 ## References
 
 1. **Hoesl, M.A.U. et al. (2020).**
