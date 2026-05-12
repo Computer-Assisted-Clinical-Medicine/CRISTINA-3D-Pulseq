@@ -3,7 +3,7 @@
 This repository is part of an abstract submitted to ISMRM 2026 (#03129, 469-05-002). It provides a
 ready-to-compile open-source implementation of the 3D sodium multi-quantum
 coherence (MQC) sequence **CRISTINA** (*Cartesian imaging of single and
-triple-quantum sodium*), implemented in MATLAB using the
+triple-quantum 23Na*), implemented in MATLAB using the
 [Pulseq](https://pulseq.github.io/) framework, together with a corresponding
 reconstruction script.
 
