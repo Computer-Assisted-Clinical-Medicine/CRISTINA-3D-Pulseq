@@ -1,6 +1,6 @@
 # CRISTINA — 3D Sodium Multi-Quantum Coherence MRI (Pulseq)
 
-This repository is part of an abstract submitted to ISMRM 2026. It provides a
+This repository is part of an abstract submitted to ISMRM 2026(#03129,469-05-002). It provides a
 ready-to-compile open-source implementation of the 3D sodium multi-quantum
 coherence (MQC) sequence **CRISTINA** (*Cartesian imaging of single and
 triple-quantum sodium*), implemented in MATLAB using the
